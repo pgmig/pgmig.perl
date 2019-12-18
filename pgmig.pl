@@ -24,10 +24,10 @@ my $do_commit = 1;
 my @buf;
 my $json_xs = JSON::XS->new()->utf8(1);
 
-my $base = 'sql/pgmig-testing/';
+my $base = 'sql/pgmig/';
 
 # raise messages as json strings
-my $proto_ver = q(select set_config('variables.pgmig_proto_version', '1', true););
+my $proto_ver = q(select set_config('pgmig.assert_proto', '1', true););
 
  sub handle_error {
   my $message = shift;
@@ -38,8 +38,8 @@ my $proto_ver = q(select set_config('variables.pgmig_proto_version', '1', true);
 
 sub handle_message{
   my $message = shift;
-  if ($message =~ /^WARNING:  \{/) {
-    $message =~ s/^WARNING:  //;
+  if ($message =~ /^NOTICE:  \{/) {
+    $message =~ s/^NOTICE:  //;
     chomp $message;
     my $data = $json_xs->decode($message);
 
